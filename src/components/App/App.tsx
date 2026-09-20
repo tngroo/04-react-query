@@ -64,6 +64,7 @@ useEffect(() => {
 
     function handleSearch(newQuery: string) {
        setQuery(newQuery)  
+       setCurrentPage(1)
 }
 
 function handleSelectMovie(movie: Movie){
