@@ -1,5 +1,5 @@
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
-import toast from "react-hot-toast";
+import {toast, Toaster} from "react-hot-toast";
 import { useEffect, useState } from "react";
 
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
@@ -41,12 +41,13 @@ previousLabel="←"
 />
     )
 }
+
 export default function App(){
     const [query, setQuery] = useState('')
     const [currentPage, setCurrentPage] = useState(1);
 
 
-    const {data: movies, isLoading, isError} = useQuery<MoviesResponse>({
+    const {data: movies, isLoading, isError, isSuccess} = useQuery<MoviesResponse>({
         queryKey: ["movies", query, currentPage],
         queryFn: () => fetchMovies(query, currentPage),
         enabled: query.length > 0,
@@ -76,10 +77,11 @@ function handleCloseModal(){
 }
 return (
     <>
+    <Toaster position="top-right" />
     <SearchBar onSubmit={handleSearch} />
     {isLoading && <Loader/>}
     {isError && <ErrorMessage/>}
-    {!isLoading && !isError && movies && query.length > 0 && (
+    {isSuccess && movies && query.length > 0 && (
         <MovieGrid movies ={movieList} onSelect={handleSelectMovie}/>
     )}
 
@@ -93,6 +95,7 @@ return (
         onPageChange={setCurrentPage}
     />
     )}
+    
     </>
 )
 }
