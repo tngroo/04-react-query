@@ -12,12 +12,11 @@ export interface MoviesResponse {
 const MY_TOKEN = import.meta.env.VITE_TMDB_TOKEN;
 const BASE_URL = "https://api.themoviedb.org/3"
 
-export async function fetchMovies(query:string): Promise<Movie[]> {
-    
-
-const response = await axios.get<MoviesResponse>(`${BASE_URL}/search/movie` , {
+export async function fetchMovies(query:string, page: number): Promise<MoviesResponse> {
+    const response = await axios.get(`${BASE_URL}/search/movie` , {
     params: {
         query,
+        page, 
         language: "en-US",
     }, 
     headers: {
@@ -25,5 +24,5 @@ const response = await axios.get<MoviesResponse>(`${BASE_URL}/search/movie` , {
 },
 });
 
-return response.data.results
+return response.data
 }
